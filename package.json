@@ -1,0 +1,11 @@
+{
+  "name": "cryptasm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "dignifiedquire <dignifiedquire@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "cargo build --target asmjs-unknown-emscripten",
+    "test": "node test/index.spec.js"
+  }
+}
