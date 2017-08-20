@@ -1,35 +1,38 @@
 'use strict'
 
 const Benchmark = require('benchmark')
-const aesBrowserify = require('browserify-aes')
+const aesBrowserify = require('browserify-aes/browser')
 const crypto = require('crypto')
 const cryptasm = require('../')
 
-function run () {
-  let key = new Buffer('000102030405060708090A0B0C0D0E0F', 'hex')
-  let input = new Buffer('00112233445566778899AABBCCDDEEFF', 'hex')
+const key = crypto.randomBytes(32)
+const iv = crypto.randomBytes(16)
+
+function run (message) {
+  let res = []
 
   new Benchmark.Suite()
     .add('cryptasm', () => {
-      const eKey = cryptasm.setEncryptKey(key, 128)
+      res.push(cryptasm.encrypt(message(), key, iv))
+    })
+    .add('node crypto', () => {
+      const node = crypto.createCipheriv('aes-256-cbc', key, iv)
+      node.update(message())
+      res.push(node.final())
     })
     .add('browserify-aes', () => {
-      const cipher = aesBrowserify.createCipher('aes-128-ecb', key)
+      const browserify = aesBrowserify.createCipheriv('aes-256-cbc', key, iv)
+      browserify.update(message())
+      res.push(browserify.final())
     })
     .on('cycle', (e) => {
+      res = []
       console.log(String(e.target))
     })
     .run()
 }
 
-// run()
-
-const message = new Buffer('hello world')
-const key = Buffer.allocUnsafe(32)
-const iv = Buffer.allocUnsafe(16)
-iv.fill(0)
-
-console.log(cryptasm.encrypt(message, key, iv))
-const c = crypto.createCipheriv('aes-256-cbc', key, iv)
-c.update(message)
-console.log(c.final().toString('hex'))
+let lorem = (size) => () => crypto.randomBytes(size)
+run(lorem(20))
+run(lorem(80))
+// run(lorem(800))

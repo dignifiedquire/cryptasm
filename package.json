@@ -5,7 +5,8 @@
   "author": "dignifiedquire <dignifiedquire@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "cargo build --target asmjs-unknown-emscripten",
+    "build:debug": "cargo build --target asmjs-unknown-emscripten",
+    "build:release": "cargo build --release --target asmjs-unknown-emscripten",
     "test": "node test/index.spec.js"
   },
   "devDependencies": {

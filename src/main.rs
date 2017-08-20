@@ -106,15 +106,19 @@ fn aes_decrypt(encrypted_data: &[u8],
 pub extern "C" fn c_encrypt(message_ptr: *const u8,
                             message_len: usize,
                             key_ptr: *const u8,
-                            iv_ptr: *const u8) {
+                            iv_ptr: *const u8,
+                            cipher_ptr: *mut u8,
+                            cipher_len: usize) {
     let message = unsafe { std::slice::from_raw_parts(message_ptr, message_len) };
     let key = unsafe { std::slice::from_raw_parts(key_ptr, 32) };
     let iv = unsafe { std::slice::from_raw_parts(iv_ptr, 16) };
+    let cipher = unsafe { std::slice::from_raw_parts_mut(cipher_ptr, cipher_len) };
+    // println!("{:?} {:?} {:?}", message, key, iv);
 
-    println!("{:?} {:?} {:?}", message, key, iv);
+    let out = aes_encrypt(message, key, iv).ok().unwrap();
+    // println!("{:?} {} - {}", cipher, cipher_len, out.len());
 
-    let encrypted_data = aes_encrypt(message, key, iv).ok().unwrap();
-    println!("{:?}", encrypted_data);
+    cipher.copy_from_slice(out.as_slice());
     // let decrypted_data = decrypt(&encrypted_data[..], &key, &iv).ok().unwrap();
 }
 
