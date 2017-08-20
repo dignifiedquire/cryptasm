@@ -3,6 +3,10 @@ name = "cryptasm"
 version = "0.1.0"
 authors = ["dignifiedquire <dignifiedquire@gmail.com>"]
 
+[features]
+with-bench = []
+
 [dependencies]
 byteorder = "^1.1.0"
 rustc-serialize = "*"
+rand = "^0.3"

@@ -1,4 +1,4 @@
 [target.asmjs-unknown-emscripten]
 rustflags = [
-    "-Clink-args=-s EXPORTED_FUNCTIONS=['_testing']",
+    "-Clink-args=-s EXPORTED_FUNCTIONS=['_c_encrypt']",
 ]
