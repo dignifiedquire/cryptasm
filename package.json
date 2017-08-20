@@ -7,10 +7,20 @@
   "scripts": {
     "build:debug": "cargo build --target asmjs-unknown-emscripten",
     "build:release": "cargo build --release --target asmjs-unknown-emscripten",
-    "test": "node test/index.spec.js"
+    "bench": "npm run build:release && node bench/index.js",
+    "test": "npm run build:debug && jest",
+    "dev": "jest --watch"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "browserify-aes": "^1.0.6"
+    "browserify-aes": "^1.0.6",
+    "jest": "^20.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      "/node_modules/",
+      "/target/"
+    ]
   }
 }
