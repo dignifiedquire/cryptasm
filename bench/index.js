@@ -1,16 +1,18 @@
 'use strict'
+process.on('uncaughtException', (err) => {throw err})
+process.on('unhandledRejection', (err) => {throw err})
 
 const Benchmark = require('benchmark')
 const aesBrowserify = require('browserify-aes/browser')
 const crypto = require('crypto')
-const cryptasm = require('../')
+const Cryptasm = require('../dist/index')
 
 const key = crypto.randomBytes(32)
 const iv = crypto.randomBytes(16)
 
 const message = (size) => crypto.randomBytes(size)
 
-function run (size) {
+function run (size, cryptasm) {
   let res = []
 
   new Benchmark.Suite()
@@ -34,7 +36,12 @@ function run (size) {
     .run()
 }
 
-console.log('AES 256 CBC')
-run(20)
-run(80)
-run(800)
+Cryptasm().then((cryptasm) => {
+  console.log('AES 256 CBC')
+  run(20, cryptasm)
+  run(80, cryptasm)
+  run(800, cryptasm)
+}).catch((err) => {
+  console.error('fail', err)
+  process.exit(1)
+})
