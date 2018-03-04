@@ -5,20 +5,23 @@
   "author": "dignifiedquire <dignifiedquire@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build:debug": "cargo build --target asmjs-unknown-emscripten",
-    "build:release": "cargo build --release --target asmjs-unknown-emscripten",
+    "build": "npm run build:cargo && npm run build:bindgen",
+    "build:bindgen": "wasm-bindgen target/wasm32-unknown-unknown/release/cryptasm.wasm --debug --out-dir dist",
+    "build:cargo": "cargo build --release --target wasm32-unknown-unknown",
     "bench": "npm run build:release && node bench/index.js",
     "test": "npm run build:debug && jest",
-    "dev": "jest --watch"
+    "dev": "jest --watch",
+    "serve": "webpack-dev-server"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "browserify-aes": "^1.0.6",
+    "browserify-aes": "^1.1.1",
     "file-loader": "^0.11.2",
     "jest": "^20.0.4",
     "rust-wasm-loader": "^0.1.2",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-server": "^3.1.0"
   },
   "jest": {
     "testEnvironment": "node",
