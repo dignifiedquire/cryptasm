@@ -7,6 +7,7 @@ authors = ["dignifiedquire <dignifiedquire@gmail.com>"]
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = { git = 'https://github.com/alexcrichton/wasm-bindgen' }
+wasm-bindgen = { git = "https://github.com/rustwasm/wasm-bindgen" }
 # rust-crypto = "*"
-aes = { "path" = "../rust-aes" }
+aes = "^0.1"
+block-modes = "*"

@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run build:cargo && npm run build:bindgen",
-    "build:bindgen": "wasm-bindgen target/wasm32-unknown-unknown/release/cryptasm.wasm --debug --out-dir dist",
+    "build:bindgen": "wasm-bindgen target/wasm32-unknown-unknown/release/cryptasm.wasm --out-dir dist",
     "build:cargo": "cargo build --release --target wasm32-unknown-unknown",
     "bench": "npm run build:release && node bench/index.js",
     "test": "npm run build:debug && jest",

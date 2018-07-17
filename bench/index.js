@@ -1,7 +1,12 @@
 'use strict'
 
 import _local from '../'
-const Benchmark = require('benchmark')
+import _ from 'lodash'
+import process from 'process'
+
+const benchmark = require('benchmark')
+const Benchmark = benchmark.runInContext({ _, process })
+
 if (typeof window !== 'undefined') {
   window.Benchmark = Benchmark
 }
@@ -12,6 +17,8 @@ const _libp2p = require('libp2p-crypto')
 
 let key = Buffer.alloc(16, 0xff)
 let iv = Buffer.alloc(16, 0x01)
+
+console.log("STARTING")
 
 _local.then((_local) => {
   function test (mod, message, cb) {
@@ -60,4 +67,7 @@ _local.then((_local) => {
   run(lorem.slice(0, 20), key)
   run(lorem.slice(0, 80), key)
   // run(lorem, key)
+}).catch((err) => {
+  console.error("FAIL")
+  console.error(err)
 })
